@@ -10,17 +10,18 @@
 
 * {
   box-sizing: border-box;
-  /* 为什么要设置margin padding为0 */
+  font-family: "Poppins", sans-serif;
+  /* 为什么要在全局设置margin padding为0 */
   margin: 0;
   padding: 0;
-  font-family: "Poppins", sans-serif;
 }
 
 .showcase {
+  /* 如何思考为元素开启什么定位 */
   position: absolute;
   right: 0;
-  /* 后面要设不同数值，打开下层menu */
   width: 100%;
+  /* 为什么这里用vh */
   min-height: 100vh;
   padding: 100px;
   display: flex;
@@ -29,15 +30,23 @@
   background-color: #000;
   color: #fff;
   z-index: 2;
-  transition: 0.5s ease-in-out;
 }
 
+.showcase.active {
+  right: var(--menu-width);
+  /* 为什么重新设置宽度后，字体会回到中心位置 */
+  width: calc(100% - var(--menu-width));
+}
+
+/* 直接为header设置，而不单独为travel设置 */
 .showcase header {
+  /* 为什么开绝对定位 */
   position: absolute;
+  /* top left是为了找原点吗 */
   top: 0px;
   left: 0px;
-  /* left0去掉后，travel会往内缩进，为什么 */
-  /* 下面已经有padding，为什么这里还要设置top left? */
+  /* 绝对定位元素性质会改变，块的高宽被元素撑开。 */
+  /* 但是为什么不指定header的高度呢？ */
   width: 100%;
   padding: 40px 100px;
   display: flex;
@@ -48,26 +57,17 @@
 }
 
 .showcase header .toggle {
+  /* 为什么给toggle开相对定位 */
   position: relative;
+  /* 理解：给元素设置宽高，再给背景设置大小和位置 */
   width: 60px;
   height: 60px;
-  /*可以写成 width: var(--logo-size)
-  height: var(--logo-size) */
   background: url("./src/image/menu.svg");
   background-repeat: no-repeat;
   background-size: 30px;
-  /* 可以写成background-size: var(--logo-size)/2 */
   background-position: center;
   cursor: pointer;
   filter: invert(1);
-}
-
-/* active部分要等全部做完之后再做 */
-.showcase.active {
-  /* 新加menu宽度，将showcase部分往左挤 */
-  right: var(--menu-width);
-  /* 重新计算showcase宽度，不一样单位可用calc()来计算 */
-  width: calc(100% - var(--menu-width));
 }
 
 .showcase header .toggle.active {
@@ -78,12 +78,14 @@
 }
 
 .showcase video {
+  /* 这里的定位父元素是showcase吗 */
   position: absolute;
+  /* 和header一样，这里为什么要写top left */
   top: 0;
   left: 0;
-  /* 为什么设置top和lef，不是设置right bottom */
   width: 100%;
   height: 100%;
+  /* object-fit属性用于指定如何调整 <img> 或 <video> 的大小以适合其容器。 */
   object-fit: cover;
   opacity: 0.8;
   z-index: 0;
@@ -100,6 +102,8 @@
 }
 
 .text {
+  /* 疑问：这里为什么开启相对定位
+理解：相对定位不用指定乱七八糟的位置 */
   position: relative;
   z-index: 4;
 }
@@ -108,7 +112,6 @@
   font-size: 5rem;
   font-weight: 800;
   line-height: 1em;
-  /* 用em可以继承设置的字体的大小，并在后期做响应的时候，根据字体的改变而改变。 */
   text-transform: uppercase;
 }
 
@@ -121,20 +124,20 @@
 
 .text p {
   font-size: 1.1rem;
-  margin: 20px 0;
   max-width: 700px;
+  margin: 20px 0;
 }
 
 .text a {
   display: inline-block;
   font-size: 1rem;
+  text-decoration: none;
   color: var(--background-color);
   background-color: var(--font-color);
-  margin-top: 10px;
   padding: 10px 30px;
-  text-decoration: none;
-  text-transform: uppercase;
+  margin-top: 10px;
   letter-spacing: 2px;
+  text-transform: uppercase;
   transition: 0.2s;
 }
 
@@ -145,21 +148,18 @@
 .social {
   position: absolute;
   display: flex;
-  bottom: 20px;
-  cursor: pointer;
   justify-content: center;
   align-items: center;
-}
-
-.social li {
   list-style: none;
+  bottom: 20px;
+  cursor: pointer;
+  filter: invert(1);
 }
 
 .social li a {
   display: inline-block;
-  filter: invert(1);
   margin-right: 20px;
-  transition: 0.5s;
+  transition: 0.4s;
 }
 
 .social li a:hover {
@@ -168,25 +168,26 @@
 
 .menu {
   position: absolute;
-  z-index: 1;
   top: 0;
+  /* 为什么这里设置right而不是left */
   right: 0;
   width: var(--menu-width);
-  /* 过度约束情况发生，会自动调整右边距0为menu宽度。 */
   height: 100%;
   display: flex;
   justify-content: center;
   align-items: center;
+  z-index: 1;
 }
 
-.menu ul li {
-  list-style: none;
+.menu li {
+  /* 为什么要设置 relative，只是习惯吗 */
   position: relative;
+  list-style: none;
 }
 
-.menu ul li a {
-  color: var(--overlay-color);
+.menu li a {
   text-decoration: none;
+  color: var(--overlay-color);
   font-size: 24px;
 }
 
